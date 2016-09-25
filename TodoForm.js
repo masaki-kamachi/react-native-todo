@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { Text, TextInput, View, TouchableHighlight, StyleSheet } from 'react-native';
 
+import realm from './realm';
+
 export default class TodoForm extends Component {
   constructor(props) {
     super(props);
@@ -13,6 +15,13 @@ export default class TodoForm extends Component {
     if (!item || item == '') {
       return;
     }
+
+    // insert処理
+    let nextId = realm.objects('Data').length + 1;
+    realm.write(() => {
+      realm.create('Data', {id: nextId, item: item});
+    });
+    
     let data = this.props.data;
     data.push({id: data.length + 1, item: item, doneFlg: 'N'});
     this.props.onItemSubmit(data);
