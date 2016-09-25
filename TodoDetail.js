@@ -2,21 +2,27 @@ import React, { Component } from 'react';
 import { Text, View, TouchableHighlight, StyleSheet } from 'react-native';
 
 export default class TodoItem extends Component {
-  constructor(props) {
-    super(props);
-  }
 
-  handleDetail(e) {
-    this.props.onDetail(this.props.data.id);
+  // 削除ボタンを押下された時の処理の入り口になります。
+  handleDelete(e) {
+    this.props.onDelete(this.props.todo.id);
   }
 
   render() {
+    let doneText = this.props.todo.doneFlg === 'N' ? '完了' : '完了済み';
     return (
-      <TouchableHighlight style={styles.box} onPress={this.handleDetail.bind(this)}>
-        <Text key={this.props.data.id} style={styles.textInput}>
-          {this.props.data.item}
+      <View style={styles.box}>
+        <Text>
+          {this.props.todo.item}
         </Text>
-      </TouchableHighlight>
+        <TouchableHighlight
+          onPress={this.handleDelete.bind(this)}
+          style={styles.button}>
+          <View>
+            <Text>{doneText}</Text>
+          </View>
+        </TouchableHighlight>
+      </View>
     );
   }
 }

@@ -4,14 +4,13 @@ import { Text, View, ListView } from 'react-native';
 import TodoItem from './TodoItem';
 
 export default class TodoList extends Component {
+  constructor(props) {
+    super(props);
+  }
 
-  // 削除ボタンを押されたTodoのフラグを立てます。
-  handleDelete(id) {
-    let data = this.props.data;
-    data.filter((data) => data.id === id).forEach((data) => {
-      data.doneFlg = 'Y'
-    });
-    this.props.onItemDelete(data);
+  // セルをクリックされた際に詳細ページに遷移します。
+  handleDetail(id) {
+    this.props.onForward(id);
   }
 
   render() {
@@ -28,7 +27,7 @@ export default class TodoList extends Component {
       <View>
         <ListView
           dataSource={data}
-          renderRow={(rowData) => <TodoItem data={rowData} onItemDelete={this.handleDelete.bind(this)} />}
+          renderRow={(rowData) => <TodoItem data={rowData} onDetail={this.handleDetail.bind(this)}/>}
         />
       </View>
     );

@@ -3,12 +3,14 @@ import { AppRegistry, Text, View, StyleSheet, Navigator, TouchableHighlight } fr
 
 import TodoForm from './TodoForm';
 import TodoList from './TodoList';
+import TodoDetail from './TodoDetail';
 
 class Todo extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      data: []
+      data: [],
+      detailIndex: null
     };
   }
 
@@ -17,21 +19,52 @@ class Todo extends Component {
     this.setState({ data: data });
   }
 
+  handleDelete(id) {
+    let data = this.state.data;
+    data.filter((data) => data.id === id).forEach((data) => {
+      data.doneFlg = 'Y'
+    });
+    this.setState({ data: data});
+  };
+
   render() {
     const routes = [
       { title: 'TodoApp', index: 0 },
       { title: 'Done', index: 1 },
+      { title: 'Todo', index: 2},
     ];
     return (
       <Navigator
         initialRoute={routes[0]}
         renderScene={(route, navigator) => {
+          if (route.index === 0 || route.index === 1) {
+            return (
+              <View style={{
+                marginTop: 60
+              }}>
+                <TodoForm
+                  onItemSubmit={this.handleItemSubmit.bind(this)}
+                  data={this.state.data}
+                  index={route.index}
+                />
+                <TodoList
+                  onItemDelete={this.handleItemSubmit.bind(this)}
+                  data={this.state.data}
+                  index={route.index}
+                  onForward={ (id) => {
+                    this.setState({ detailIndex: id });
+                    navigator.push(routes[2]);
+                  }}
+                />
+              </View>
+            );
+          }
           return (
-            <View style={{
-              marginTop: 60
-            }}>
-              <TodoForm onItemSubmit={this.handleItemSubmit.bind(this)} data={this.state.data} index={route.index}/>
-              <TodoList onItemDelete={this.handleItemSubmit.bind(this)} data={this.state.data} index={route.index}/>
+            <View style={{marginTop: 60}}>
+              <TodoDetail
+                todo={this.state.data[this.state.detailIndex - 1]}
+                onDelete={this.handleDelete.bind(this)}
+              />
             </View>
           );
         }}
@@ -46,6 +79,15 @@ class Todo extends Component {
                       navigator.pop();
                     }}>
                       <Text style={{color: 'white'}}>Todo</Text>
+                    </TouchableHighlight>
+                  );
+                }
+                if (route.index === 2) {
+                  return (
+                    <TouchableHighlight onPress={() => {
+                      navigator.pop();
+                    }}>
+                      <Text style={{color: 'white'}}>Back</Text>
                     </TouchableHighlight>
                   );
                 }
