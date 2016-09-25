@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { AppRegistry, Text, View, StyleSheet, Navigator, TouchableHighlight } from 'react-native';
-import Realm from 'realm';
 
 import TodoForm from './TodoForm';
 import TodoList from './TodoList';
@@ -125,18 +124,5 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
 });
-
-class Data extends Realm.Object{}
-Data.schema = {
-    name: 'Data',
-    primaryKey: 'id',
-    properties: {
-      id: 'int',
-      item: 'string',
-      doneFlg: {type: 'string', default: 'N'},
-    },
-};
-
-let realm = new Realm({schema: [Data]});
 
 AppRegistry.registerComponent('Todo', () => Todo);
