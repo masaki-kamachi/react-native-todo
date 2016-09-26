@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Text, View, ListView } from 'react-native';
 
+import realm from './realm';
 import TodoItem from './TodoItem';
 
 export default class TodoList extends Component {
@@ -15,11 +16,11 @@ export default class TodoList extends Component {
 
   render() {
     const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
-    let doneFlg = this.props.index === 0 ? 'N': 'Y';
+    let doneFlg = this.props.index === 0 ? "N" : "Y";
     if (this.props.data < 1) {
       return null;
     }
-    let data = ds.cloneWithRows(this.props.data.filter((data) => data.doneFlg === doneFlg));
+    let data = ds.cloneWithRows(realm.objects('Data').filtered('doneFlg =="' + doneFlg + '"'));
     if (data < 1) {
       return null;
     }

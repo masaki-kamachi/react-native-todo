@@ -62,7 +62,7 @@ class Todo extends Component {
           return (
             <View style={{marginTop: 60}}>
               <TodoDetail
-                todo={this.state.data[this.state.detailIndex - 1]}
+                id={this.state.detailIndex}
                 onDelete={this.handleDelete.bind(this)}
               />
             </View>
