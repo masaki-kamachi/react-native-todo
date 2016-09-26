@@ -9,23 +9,9 @@ class Todo extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      data: [],
       detailIndex: null
     };
   }
-
-  // Todoの配列のデータ更新の共通処理になります。
-  handleItemSubmit(data) {
-    this.setState({ data: data });
-  }
-
-  handleDelete(id) {
-    let data = this.state.data;
-    data.filter((data) => data.id === id).forEach((data) => {
-      data.doneFlg = 'Y'
-    });
-    this.setState({ data: data});
-  };
 
   render() {
     const routes = [
@@ -43,13 +29,9 @@ class Todo extends Component {
                 marginTop: 60
               }}>
                 <TodoForm
-                  onItemSubmit={this.handleItemSubmit.bind(this)}
-                  data={this.state.data}
                   index={route.index}
                 />
                 <TodoList
-                  onItemDelete={this.handleItemSubmit.bind(this)}
-                  data={this.state.data}
                   index={route.index}
                   onForward={ (id) => {
                     this.setState({ detailIndex: id });
@@ -63,7 +45,6 @@ class Todo extends Component {
             <View style={{marginTop: 60}}>
               <TodoDetail
                 id={this.state.detailIndex}
-                onDelete={this.handleDelete.bind(this)}
               />
             </View>
           );

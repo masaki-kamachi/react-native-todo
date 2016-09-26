@@ -4,19 +4,28 @@ import { Text, View, TouchableHighlight, StyleSheet } from 'react-native';
 import realm from './realm';
 
 export default class TodoItem extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      detailData: realm.objects('Data').filtered('id =="' + this.props.id + '"')[0]
+    };
+  }
 
   // 削除ボタンを押下された時の処理の入り口になります。
   handleDelete(e) {
-    this.props.onDelete(this.props.id);
+    let updateData = realm.objects('Data').filtered('id =="' + this.state.detailData.id + '"')[0];
+    realm.write(() => {
+      updateData.doneFlg = 'Y';
+    })
+    this.setState({ detailData: updateData});
   }
 
   render() {
-    let detailData = realm.objects('Data').filtered('id =="' + this.props.id + '"')[0];
-    let doneText = detailData.doneFlg === 'N' ? '完了' : '完了済み';
+    let doneText = this.state.detailData.doneFlg === 'N' ? '完了' : '完了済み';
     return (
       <View style={styles.box}>
         <Text>
-          {detailData.item}
+          {this.state.detailData.item}
         </Text>
         <TouchableHighlight
           onPress={this.handleDelete.bind(this)}

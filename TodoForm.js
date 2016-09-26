@@ -21,10 +21,8 @@ export default class TodoForm extends Component {
     realm.write(() => {
       realm.create('Data', {id: nextId, item: item});
     });
-    
-    let data = this.props.data;
-    data.push({id: data.length + 1, item: item, doneFlg: 'N'});
-    this.props.onItemSubmit(data);
+
+    // テキストボックスを空にします
     this.setState({ text: ' '});
   }
 
